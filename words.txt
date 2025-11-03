@@ -1,0 +1,5 @@
+apple
+grape
+pearl
+chair
+table
