@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define WORD_LENGTH 5
 #define MAX_WORDS 10000
@@ -23,17 +24,26 @@ int load_dictionary(const char *filename, char words[][WORD_LENGTH + 1]) {
     return count;
 }
 
-int main() {
-    char dictionary[MAX_WORDS][WORD_LENGTH + 1];
-    int word_count = load_dictionary("words.txt", dictionary);
+// Picks a random word from the dictionary
+const char* choose_random_word(char words[][WORD_LENGTH + 1], int count) {
+    srand(time(NULL)); // Initialize random seed (based on current time)
+    int index = rand() % count; // Pick a random number between 0 and count-1
+    return words[index]; // Return that random word
+}
 
-    if (word_count == 0) {
+int main() {
+    char words[MAX_WORDS][WORD_LENGTH + 1]; // ✅ declare here first
+
+    int count = load_dictionary("words.txt", words);
+    if (count == 0) { // changed from -1 to 0 (since you return 0 on error)
         printf("No words loaded!\n");
         return 1;
     }
 
-    printf("Loaded %d words from dictionary.\n", word_count);
-    printf("Example first word: %s\n", dictionary[0]);
+    printf("Loaded %d words from dictionary.\n", count);
+
+    const char *target = choose_random_word(words, count);
+    printf("Random word chosen (for testing): %s\n", target);
 
     return 0;
 }
