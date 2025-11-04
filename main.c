@@ -3,161 +3,243 @@
 #include <string.h>  // for strlen, strcmp
 #include <time.h>    // for time (used in random seed)
 
-#define WORD_LENGTH 5
 #define MAX_WORDS 10000
+#define WORD_LENGTH 5
+#define Dictionary_SIZE 5
+#define MAX_ATTEMPTS 6 
 
-// Function to load dictionary words from file
+// Prototype declarations
+int load_dictionary(const char *filename, char words[][WORD_LENGTH + 1]);
+const char* choose_random_word(char words[][WORD_LENGTH + 1], int count);
+void compute_feedback(const char *target, const char *guess, char *feedback);
+void print_grid(char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1], char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1], int attempts);
+int matches_feedback(const char *candidate_word, const char *guess, const char *expected_feedback);
+void solver(char words[][WORD_LENGTH + 1], int count, char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1], char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1], int attempts);
+
+
+// Load dictionary from file (one 5-letter word per line)
 int load_dictionary(const char *filename, char words[][WORD_LENGTH + 1]) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         printf("Error: Could not open %s\n", filename);
         return 0;
     }
-
     int count = 0;
     while (fscanf(file, "%5s", words[count]) == 1) {
+        // ensure lowercase
+        for (int i = 0; i < WORD_LENGTH; i++)
+            if (words[count][i] >= 'A' && words[count][i] <= 'Z')
+                words[count][i] += 32;
+        words[count][WORD_LENGTH] = '\0';
         count++;
         if (count >= MAX_WORDS) break;
     }
-
     fclose(file);
     return count;
 }
 
-// Pick a random word from the dictionary
 const char* choose_random_word(char words[][WORD_LENGTH + 1], int count) {
-    srand(time(NULL)); // Initialize random seed
+    srand((unsigned)time(NULL));
     int index = rand() % count;
     return words[index];
 }
 
-// Compare guess with target and show feedback
-void give_feedback(const char *guess, const char *target) {
+void compute_feedback(const char *target, const char *guess, char *feedback) {
+    int target_counts[26] = {0};
+
     for (int i = 0; i < WORD_LENGTH; i++) {
         if (guess[i] == target[i]) {
-            printf("🟩 "); // Correct position
+            feedback[i] = 'G';
         } else {
-            int found = 0;
-            for (int j = 0; j < WORD_LENGTH; j++) {
-                if (guess[i] == target[j]) {
-                    found = 1;
-                    break;
-                }
-            }
-            if (found)
-                printf("🟨 "); // Letter in word but wrong position
-            else
-                printf("⬜️ "); // Letter not in word
+            feedback[i] = '?';
+            target_counts[target[i] - 'a']++;
         }
+    }
+
+    for (int i = 0; i < WORD_LENGTH; i++) {
+        if (feedback[i] == 'G') continue;
+        int idx = guess[i] - 'a';
+        if (idx >= 0 && idx < 26 && target_counts[idx] > 0) {
+            feedback[i] = 'Y';
+            target_counts[idx]--;
+        } else {
+            feedback[i] = 'B';
+        }
+    }
+    feedback[WORD_LENGTH] = '\0';
+}
+
+void print_grid(char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1], char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1], int attempts) {
+    printf("\nWORDLE BOARD:\n");
+    for (int i = 0; i < MAX_ATTEMPTS; i++) {
+        if (i >= attempts) {
+            for (int j = 0; j < WORD_LENGTH; j++) printf("⬜️ ");
+            printf("  ");
+            for (int j = 0; j < WORD_LENGTH; j++) printf("_");
+            printf("\n");
+            continue;
+        }
+        for (int j = 0; j < WORD_LENGTH; j++) {
+            if (feedbacks[i][j] == 'G') printf("🟩 ");
+            else if (feedbacks[i][j] == 'Y') printf("🟨 ");
+            else printf("⬜️ ");
+        }
+        printf("  %s\n", guesses[i]);
     }
     printf("\n");
 }
 
-// Solver function (simple filter for possible words)
-void solver(char words[][WORD_LENGTH + 1], int count) {
-    char guess[WORD_LENGTH + 1];
-    char feedback[WORD_LENGTH + 1];
-    int attempts = 0;
+int matches_feedback(const char *candidate_word, const char *guess, const char *expected_feedback) {
+    char computed[WORD_LENGTH + 1];
+    compute_feedback(candidate_word, guess, computed);
+    return (strcmp(computed, expected_feedback) == 0);
+}
 
-    while (1) {
-        printf("Enter your guess (5 letters): ");
-        scanf("%5s", guess);
-        for (int i = 0; i < WORD_LENGTH; i++)
-            if (guess[i] >= 'A' && guess[i] <= 'Z')
-                guess[i] += 32; // convert to lowercase
+void solver(char words[][WORD_LENGTH + 1], int count, char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1], char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1], int attempts) {
+    printf("\n🔎 Solver suggestions based on previous feedback:\n");
+    int suggestions = 0;
+    for (int i = 0; i < count; i++) {
+        int ok = 1;
+        for (int j = 0; j < attempts; j++) {
+            if (!matches_feedback(words[i], guesses[j], feedbacks[j])) {
 
-        printf("Enter feedback (G=green, Y=yellow, B=black): ");
-        scanf("%5s", feedback);
 
-        printf("Possible words:\n");
-        int found = 0;
-        for (int i = 0; i < count; i++) {
-            int match = 1;
-            for (int j = 0; j < WORD_LENGTH; j++) {
-                if (feedback[j] == 'G' && words[i][j] != guess[j]) match = 0;
-                if (feedback[j] == 'Y') {
-                    int has = 0;
-                    for (int k = 0; k < WORD_LENGTH; k++)
-                        if (words[i][k] == guess[j] && words[i][k] != guess[k])
-                            has = 1;
-                    if (!has) match = 0;
-                }
-                if (feedback[j] == 'B' && strchr(words[i], guess[j]) != NULL) match = 0;
-            }
-            if (match) {
-                printf("%s\n", words[i]);
-                found = 1;
+ok = 0;
+                break;
             }
         }
-        if (!found) printf("No matching words found.\n");
-
-        attempts++;
-        if (strcmp(feedback, "GGGGG") == 0) {
-            printf("Word guessed in %d attempts!\n", attempts);
-            break;
+        if (ok) {
+            printf("%s  ", words[i]);
+            suggestions++;
+            if (suggestions % 10 == 0) printf("\n");
         }
     }
+    if (suggestions == 0) printf("No possible words found.\n");
+    else printf("\nTotal suggestions: %d\n", suggestions);
 }
 
 int main() {
     char words[MAX_WORDS][WORD_LENGTH + 1];
-
     int count = load_dictionary("words.txt", words);
     if (count == 0) {
-        printf("No words loaded!\n");
+        printf("Please create a words.txt file (one 5-letter word per line) in the program folder.\n");
         return 1;
     }
 
     printf("✅ Loaded %d words from dictionary.\n", count);
-
     const char *target = choose_random_word(words, count);
-    printf("🎯 (For testing) Random word chosen: %s\n", target);
 
-    char guess[WORD_LENGTH + 1];
+    char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1] = {{0}};
+    char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1] = {{0}};
     int attempts = 0;
-    int max_attempts = 6;
 
-    while (attempts < max_attempts) {
-        printf("\nAttempt %d/%d - Enter your 5-letter guess: ", attempts + 1, max_attempts);
-        scanf("%5s", guess);
+    while (attempts < MAX_ATTEMPTS) {
+        print_grid(guesses, feedbacks, attempts);
 
-        // Convert guess to lowercase
-        for (int i = 0; i < WORD_LENGTH; i++)
-            if (guess[i] >= 'A' && guess[i] <= 'Z')
-                guess[i] += 32;
+        printf("Mode: (1) Manual guess   (2) Solver suggestions then choose\n");
+        printf("Choose mode (1 or 2): ");
+        int mode = 0;
+        if (scanf("%d", &mode) != 1) {
+            while (getchar() != '\n');
+            printf("Invalid input. Try again.\n");
+            continue;
+        }
+        char guess[WORD_LENGTH + 1];
 
-        if (strlen(guess) != WORD_LENGTH) {
-            printf("❌ Invalid length! Must be 5 letters.\n");
+        if (mode == 1) {
+            printf("Enter your 5-letter guess: ");
+            if (scanf("%5s", guess) != 1) {
+                while (getchar() != '\n');
+                printf("Invalid input. Try again.\n");
+                continue;
+            }
+            for (int i = 0; i < WORD_LENGTH; i++)
+                if (guess[i] >= 'A' && guess[i] <= 'Z') guess[i] += 32;
+
+            if (strlen(guess) != WORD_LENGTH) {
+                printf("❌ Invalid length! Must be 5 letters.\n");
+                continue;
+            }
+
+            int valid = 0;
+            for (int i = 0; i < count; i++)
+                if (strcmp(guess, words[i]) == 0) { valid = 1; break; }
+            if (!valid) {
+                printf("⚠️ Word not in dictionary!\n");
+                continue;
+            }
+        } else if (mode == 2) {
+            solver(words, count, guesses, feedbacks, attempts);
+            printf("Enter your chosen word from suggestions (or any 5-letter word): ");
+            if (scanf("%5s", guess) != 1) {
+                while (getchar() != '\n');
+                printf("Invalid input. Try again.\n");
+                continue;
+            }
+            for (int i = 0; i < WORD_LENGTH; i++)
+                if (guess[i] >= 'A' && guess[i] <= 'Z') guess[i] += 32;
+            if (strlen(guess) != WORD_LENGTH) {
+                printf("❌ Invalid length! Must be 5 letters.\n");
+                continue;
+            }
+        } else {
+            printf("❌ Invalid mode selection.\n");
             continue;
         }
 
-
-// Check if guess exists in dictionary
-        int valid = 0;
-        for (int i = 0; i < count; i++)
-            if (strcmp(guess, words[i]) == 0) valid = 1;
-
-        if (!valid) {
-            printf("⚠️ Word not in dictionary!\n");
-            continue;
-        }
-
-        // Give feedback
-        give_feedback(guess, target);
+        strcpy(guesses[attempts], guess);
+        compute_feedback(target, guess, feedbacks[attempts]);
         attempts++;
 
+        print_grid(guesses, feedbacks, attempts);
+
         if (strcmp(guess, target) == 0) {
-            printf("🎉 Congratulations! You guessed the word in %d tries!\n", attempts);
+            printf("🎉 Congratulations! You guessed the word in %d attempts!\n", attempts);
             break;
+        } else {
+            printf("Attempt %d/%d complete.\n", attempts, MAX_ATTEMPTS);
         }
 
-        if (attempts == max_attempts) {
+        if (attempts == MAX_ATTEMPTS) {
             printf("❌ Game over! The word was: %s\n", target);
+            break;
         }
     }
 
-    // Optionally, you can call solver here if you want automated help
-    // solver(words, count);
+    printf("\nWould you like to run the interactive solver (enter feedback manually)? (y/n): ");
+    char choice = '\0';
+    if (scanf(" %c", &choice) == 1 && (choice == 'y' || choice == 'Y')) {
+        printf("Interactive solver mode: enter guess and feedback (G/Y/B) to filter possibilities.\n");
+        char man_guess[WORD_LENGTH + 1], man_feedback[WORD_LENGTH + 1];
+        int m_attempts = 0;
 
+
+while (1) {
+            printf("Enter guess (5 letters) or 'exit' to leave: ");
+            if (scanf("%5s", man_guess) != 1) break;
+            if (strcmp(man_guess, "exit") == 0) break;
+            for (int i = 0; i < WORD_LENGTH; i++)
+                if (man_guess[i] >= 'A' && man_guess[i] <= 'Z') man_guess[i] += 32;
+            if (strlen(man_guess) != WORD_LENGTH) { printf("Invalid length.\n"); continue; }
+
+            printf("Enter feedback for that guess (5 chars: G/Y/B): ");
+            if (scanf("%5s", man_feedback) != 1) break;
+            for (int i = 0; i < WORD_LENGTH; i++)
+                if (man_feedback[i] >= 'a' && man_feedback[i] <= 'z') man_feedback[i] -= 32;
+            if (strlen(man_feedback) != WORD_LENGTH) { printf("Invalid feedback length.\n"); continue; }
+
+            if (m_attempts < MAX_ATTEMPTS) {
+                strcpy(guesses[m_attempts], man_guess);
+                strcpy(feedbacks[m_attempts], man_feedback);
+                m_attempts++;
+            } else {
+                printf("Reached max manual attempts for solver.\n");
+            }
+
+            solver(words, count, guesses, feedbacks, m_attempts);
+        }
+    }
+
+    printf("Thanks for playing!\n");
     return 0;
 }
