@@ -2,3 +2,4 @@ Player: imen | Word: leave | Attempts: 6 | Time: 96.0s | Result: LOSE
 Player: imen | Word: swift | Attempts: 6 | Time: 115.0s | Result: LOSE
 Player: Imen | Word: drags | Attempts: 6 | Time: 61.0s | Result: LOSE
 Player: Imen | Word: equip | Attempts: 6 | Time: 43.0s | Result: LOSE
+Player: Imen | Word: melee | Attempts: 5 | Time: 20.0s | Result: WIN

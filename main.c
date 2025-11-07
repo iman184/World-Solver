@@ -141,9 +141,10 @@ int main() {
     printf("👤 Entrez votre nom : ");
     scanf("%49s", player);
 
-    int play_again = 1; // 🔁 متغير يتحكم في إعادة اللعب
+    int play_again = 1; // 🔁 Variable qui contrôle la relance du jeu
 
     while (play_again) {
+         system("cls"); // 🔹 Clear screen before starting a new game
         const char *target = dictionary[rand() % word_count];
         char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1];
         char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1];
