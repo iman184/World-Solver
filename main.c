@@ -4,18 +4,14 @@
 #include <time.h>
 
 #define MAX_WORDS 10000
-#define WORD_LENGTH 5
-<<<<<<< HEAD
+#define WORD_LENGTH 5 
 #define MAX_ATTEMPTS 6 
-=======
-#define MAX_ATTEMPTS 6
->>>>>>> 0dec0e08e510f07d9a9df0dfc420c9f19d6bb19c
 
-// 🔹 Load dictionary from file
+// 🔹 Charger le dictionnaire
 int load_dictionary(const char *filename, char words[MAX_WORDS][WORD_LENGTH + 1]) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        printf("Error: Cannot open dictionary file '%s'\n", filename);
+        printf("Erreur : impossible d'ouvrir le fichier '%s'\n", filename);
         return 0;
     }
 
@@ -23,7 +19,7 @@ int load_dictionary(const char *filename, char words[MAX_WORDS][WORD_LENGTH + 1]
     while (fscanf(file, "%5s", words[count]) == 1) {
         for (int i = 0; i < WORD_LENGTH; i++) {
             if (words[count][i] >= 'A' && words[count][i] <= 'Z')
-                words[count][i] += 32; // convert to lowercase
+                words[count][i] += 32; // Convertir en minuscules
         }
         count++;
         if (count >= MAX_WORDS) break;
@@ -33,34 +29,34 @@ int load_dictionary(const char *filename, char words[MAX_WORDS][WORD_LENGTH + 1]
     return count;
 }
 
-// 🔹 Generate feedback (G = green, Y = yellow, _ = gray)
+// 🔹 Vérifier si le mot existe dans le dictionnaire
+int is_valid_word(const char *guess, char dictionary[MAX_WORDS][WORD_LENGTH + 1], int word_count) {
+    for (int i = 0; i < word_count; i++) {
+        if (strcmp(guess, dictionary[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+// 🔹 Générer le feedback (G, Y, _)
 void generate_feedback(const char *guess, const char *target, char *feedback) {
-<<<<<<< HEAD
     int used_target[WORD_LENGTH] = {0};
     int used_guess[WORD_LENGTH] = {0};
-=======
-    int used[WORD_LENGTH] = {0};
->>>>>>> 0dec0e08e510f07d9a9df0dfc420c9f19d6bb19c
 
-    // Step 1: Green
+    // Vert
     for (int i = 0; i < WORD_LENGTH; i++) {
         if (guess[i] == target[i]) {
             feedback[i] = 'G';
-<<<<<<< HEAD
             used_target[i] = 1;
             used_guess[i] = 1;
-=======
-            used[i] = 1;
->>>>>>> 0dec0e08e510f07d9a9df0dfc420c9f19d6bb19c
         } else {
             feedback[i] = '_';
         }
     }
 
-    // Step 2: Yellow
+    // Jaune
     for (int i = 0; i < WORD_LENGTH; i++) {
-<<<<<<< HEAD
-        if (used_guess[i]) continue; // déjà vert
+        if (used_guess[i]) continue;
         for (int j = 0; j < WORD_LENGTH; j++) {
             if (!used_target[j] && guess[i] == target[j]) {
                 feedback[i] = 'Y';
@@ -73,12 +69,11 @@ void generate_feedback(const char *guess, const char *target, char *feedback) {
     feedback[WORD_LENGTH] = '\0';
 }
 
-// 🔹 Print the Wordle grid
+// 🔹 Afficher la grille Wordle
 void print_grid(char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1],
                 char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1],
                 int attempts) {
-    printf("\nWORDLE BOARD:\n");
-
+    printf("\n🟩 WORDLE BOARD 🟨\n");
     for (int i = 0; i < MAX_ATTEMPTS; i++) {
         if (i >= attempts) {
             for (int j = 0; j < WORD_LENGTH; j++)
@@ -89,19 +84,18 @@ void print_grid(char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1],
 
         for (int j = 0; j < WORD_LENGTH; j++) {
             if (feedbacks[i][j] == 'G')
-                printf("\x1b[42m[%c]\x1b[0m ", guesses[i][j]); // green
+                printf("\x1b[42m[%c]\x1b[0m ", guesses[i][j]); // vert
             else if (feedbacks[i][j] == 'Y')
-                printf("\x1b[43m[%c]\x1b[0m ", guesses[i][j]); // yellow
+                printf("\x1b[43m[%c]\x1b[0m ", guesses[i][j]); // jaune
             else
-                printf("\x1b[47m[%c]\x1b[0m ", guesses[i][j]); // white
+                printf("\x1b[47m[%c]\x1b[0m ", guesses[i][j]); // gris
         }
-        printf("  %s\n", guesses[i]);
+        printf("\n");
     }
-
     printf("\n");
 }
 
-// 🔹 Simple solver suggestion: pick first word matching known feedback
+// 🔹 Fonction solver (suggestion automatique)
 char *solver_suggestion(char dictionary[MAX_WORDS][WORD_LENGTH + 1],
                         int word_count,
                         char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1],
@@ -122,70 +116,16 @@ char *solver_suggestion(char dictionary[MAX_WORDS][WORD_LENGTH + 1],
     return NULL;
 }
 
-=======
-        if (feedback[i] == 'G') continue;
-        for (int j = 0; j < WORD_LENGTH; j++) {
-            if (!used[j] && guess[i] == target[j]) {
-                feedback[i] = 'Y';
-                used[j] = 1;
-                break;
-            }
-        }
-    }
-    feedback[WORD_LENGTH] = '\0';
+// 🔹 Sauvegarder les scores dans un fichier
+void save_score(const char *player, const char *target, int attempts, double time_taken, int win) {
+    FILE *f = fopen("scores.txt", "a");
+    if (!f) return;
+    fprintf(f, "Player: %s | Word: %s | Attempts: %d | Time: %.1fs | Result: %s\n",
+            player, target, attempts, time_taken, win ? "WIN" : "LOSE");
+    fclose(f);
 }
 
-// 🔹 Print the Wordle grid
-void print_grid(char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1],
-                char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1],
-                int attempts) {
-    printf("\nWORDLE BOARD:\n");
-
-    for (int i = 0; i < MAX_ATTEMPTS; i++) {
-        if (i >= attempts) {
-            for (int j = 0; j < WORD_LENGTH; j++)
-                printf("[ _ ] ");
-            printf("\n");
-            continue;
-        }
-
-        for (int j = 0; j < WORD_LENGTH; j++) {
-            if (feedbacks[i][j] == 'G')
-                printf("\x1b[42m[%c]\x1b[0m ", guesses[i][j]); // green
-            else if (feedbacks[i][j] == 'Y')
-                printf("\x1b[43m[%c]\x1b[0m ", guesses[i][j]); // yellow
-            else
-                printf("\x1b[47m[%c]\x1b[0m ", guesses[i][j]); // white
-        }
-        printf("  %s\n", guesses[i]);
-    }
-
-    printf("\n");
-}
-
-// 🔹 Simple solver suggestion: pick first word matching known feedback
-char *solver_suggestion(char dictionary[MAX_WORDS][WORD_LENGTH + 1],
-                        int word_count,
-                        char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1],
-                        char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1],
-                        int attempts) {
-    for (int w = 0; w < word_count; w++) {
-        int valid = 1;
-        for (int a = 0; a < attempts; a++) {
-            char temp_feedback[WORD_LENGTH + 1];
-            generate_feedback(dictionary[w], guesses[a], temp_feedback);
-            if (strcmp(temp_feedback, feedbacks[a]) != 0) {
-                valid = 0;
-                break;
-            }
-        }
-        if (valid) return dictionary[w];
-    }
-    return NULL;
-}
-
->>>>>>> 0dec0e08e510f07d9a9df0dfc420c9f19d6bb19c
-// 🔹 Main
+// 🔹 Fonction principale
 int main() {
     srand(time(NULL));
 
@@ -193,43 +133,54 @@ int main() {
     int word_count = load_dictionary("words.txt", dictionary);
 
     if (word_count == 0) {
-        printf("No words loaded. Exiting...\n");
+        printf("❌ Aucun mot chargé.\n");
         return 1;
     }
 
     const char *target = dictionary[rand() % word_count];
-
     char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1];
     char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1];
     int attempts = 0;
     int mode;
 
-    printf("Welcome to Wordle in C!\n");
-    printf("Mode: (1) Manual guess   (2) Solver suggestions then choose\n");
-    printf("Choose mode (1 or 2): ");
+    char player[50];
+    printf("👤 Entrez votre nom : ");
+    scanf("%49s", player);
+
+    printf("\n🎯 Bienvenue dans WORDLE en C !\n");
+    printf("Choisissez un mode :\n");
+    printf(" (1) Jeu manuel\n (2) Mode solver (suggestions automatiques)\n");
+    printf("Votre choix : ");
     scanf("%d", &mode);
+
+    time_t start_time = time(NULL);
 
     while (attempts < MAX_ATTEMPTS) {
         print_grid(guesses, feedbacks, attempts);
 
         char guess[WORD_LENGTH + 1];
 
-        if (mode == 2) {
+        if (mode == 2 && attempts > 0) {
             char *suggestion = solver_suggestion(dictionary, word_count, feedbacks, guesses, attempts);
             if (suggestion)
-                printf("Solver suggests: %s\n", suggestion);
+                printf("💡 Suggestion solver : %s\n", suggestion);
             else
-                printf("Solver: no valid suggestion.\n");
+                printf("🤖 Aucune suggestion valide.\n");
         }
 
-        printf("Attempt %d/%d - Enter your %d-letter guess: ", attempts + 1, MAX_ATTEMPTS, WORD_LENGTH);
+        printf("Essai %d/%d - Entrez un mot de %d lettres : ", attempts + 1, MAX_ATTEMPTS, WORD_LENGTH);
         scanf("%5s", guess);
 
         for (int i = 0; i < WORD_LENGTH; i++)
             if (guess[i] >= 'A' && guess[i] <= 'Z') guess[i] += 32;
 
         if (strlen(guess) != WORD_LENGTH) {
-            printf("❌ Please enter exactly %d letters.\n", WORD_LENGTH);
+            printf("❌ Entrez exactement %d lettres.\n", WORD_LENGTH);
+            continue;
+        }
+
+        if (!is_valid_word(guess, dictionary, word_count)) {
+            printf("🚫 '%s' n'existe pas dans le dictionnaire.\n", guess);
             continue;
         }
 
@@ -237,16 +188,25 @@ int main() {
         generate_feedback(guess, target, feedbacks[attempts]);
 
         if (strcmp(guess, target) == 0) {
+            time_t end_time = time(NULL);
+            double seconds = difftime(end_time, start_time);
             print_grid(guesses, feedbacks, attempts + 1);
-            printf("🎉 Congratulations! You found the word: %s\n", target);
+            printf("🎉 Bravo %s ! Mot trouvé : %s\n", player, target);
+            printf("🕐 Temps : %.1f secondes\n", seconds);
+            printf("📊 Tentatives : %d / %d\n", attempts + 1, MAX_ATTEMPTS);
+            save_score(player, target, attempts + 1, seconds, 1);
             return 0;
         }
 
         attempts++;
     }
 
+    time_t end_time = time(NULL);
+    double seconds = difftime(end_time, start_time);
     print_grid(guesses, feedbacks, attempts);
-    printf("❌ Out of attempts! The word was: %s\n", target);
+    printf("❌ Perdu %s ! Le mot était : %s\n", player, target);
+    printf("🕐 Temps total : %.1f secondes\n", seconds);
+    save_score(player, target, attempts, seconds, 0);
 
     return 0;
 }
