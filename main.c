@@ -137,76 +137,96 @@ int main() {
         return 1;
     }
 
-    const char *target = dictionary[rand() % word_count];
-    char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1];
-    char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1];
-    int attempts = 0;
-    int mode;
-
     char player[50];
     printf("👤 Entrez votre nom : ");
     scanf("%49s", player);
 
-    printf("\n🎯 Bienvenue dans WORDLE en C !\n");
-    printf("Choisissez un mode :\n");
-    printf(" (1) Jeu manuel\n (2) Mode solver (suggestions automatiques)\n");
-    printf("Votre choix : ");
-    scanf("%d", &mode);
+    int play_again = 1; // 🔁 متغير يتحكم في إعادة اللعب
 
-    time_t start_time = time(NULL);
+    while (play_again) {
+        const char *target = dictionary[rand() % word_count];
+        char guesses[MAX_ATTEMPTS][WORD_LENGTH + 1];
+        char feedbacks[MAX_ATTEMPTS][WORD_LENGTH + 1];
+        int attempts = 0;
+        int mode;
 
-    while (attempts < MAX_ATTEMPTS) {
-        print_grid(guesses, feedbacks, attempts);
+        printf("\n🎯 Bienvenue dans WORDLE en C !\n");
+        printf("Choisissez un mode :\n");
+        printf(" (1) Jeu manuel\n (2) Mode solver (suggestions automatiques)\n");
+        printf("Votre choix : ");
+        scanf("%d", &mode);
 
-        char guess[WORD_LENGTH + 1];
+        time_t start_time = time(NULL);
 
-        if (mode == 2 && attempts > 0) {
-            char *suggestion = solver_suggestion(dictionary, word_count, feedbacks, guesses, attempts);
-            if (suggestion)
-                printf("💡 Suggestion solver : %s\n", suggestion);
-            else
-                printf("🤖 Aucune suggestion valide.\n");
+        while (attempts < MAX_ATTEMPTS) {
+            print_grid(guesses, feedbacks, attempts);
+
+            char guess[WORD_LENGTH + 1];
+
+            if (mode == 2 && attempts > 0) {
+                char *suggestion = solver_suggestion(dictionary, word_count, feedbacks, guesses, attempts);
+                if (suggestion)
+                    printf("💡 Suggestion solver : %s\n", suggestion);
+                else
+                    printf("🤖 Aucune suggestion valide.\n");
+            }
+
+            printf("Essai %d/%d - Entrez un mot de %d lettres : ", attempts + 1, MAX_ATTEMPTS, WORD_LENGTH);
+            scanf("%5s", guess);
+
+            for (int i = 0; i < WORD_LENGTH; i++)
+                if (guess[i] >= 'A' && guess[i] <= 'Z') guess[i] += 32;
+
+            if (strlen(guess) != WORD_LENGTH) {
+                printf("❌ Entrez exactement %d lettres.\n", WORD_LENGTH);
+                continue;
+            }
+
+            if (!is_valid_word(guess, dictionary, word_count)) {
+                printf("🚫 '%s' n'existe pas dans le dictionnaire.\n", guess);
+                continue;
+            }
+
+            strcpy(guesses[attempts], guess);
+            generate_feedback(guess, target, feedbacks[attempts]);
+
+            if (strcmp(guess, target) == 0) {
+                time_t end_time = time(NULL);
+                double seconds = difftime(end_time, start_time);
+                print_grid(guesses, feedbacks, attempts + 1);
+                printf("🎉 Bravo %s ! Mot trouvé : %s\n", player, target);
+                printf("🕐 Temps : %.1f secondes\n", seconds);
+                printf("📊 Tentatives : %d / %d\n", attempts + 1, MAX_ATTEMPTS);
+                save_score(player, target, attempts + 1, seconds, 1);
+                break;
+            }
+
+            attempts++;
         }
 
-        printf("Essai %d/%d - Entrez un mot de %d lettres : ", attempts + 1, MAX_ATTEMPTS, WORD_LENGTH);
-        scanf("%5s", guess);
-
-        for (int i = 0; i < WORD_LENGTH; i++)
-            if (guess[i] >= 'A' && guess[i] <= 'Z') guess[i] += 32;
-
-        if (strlen(guess) != WORD_LENGTH) {
-            printf("❌ Entrez exactement %d lettres.\n", WORD_LENGTH);
-            continue;
-        }
-
-        if (!is_valid_word(guess, dictionary, word_count)) {
-            printf("🚫 '%s' n'existe pas dans le dictionnaire.\n", guess);
-            continue;
-        }
-
-        strcpy(guesses[attempts], guess);
-        generate_feedback(guess, target, feedbacks[attempts]);
-
-        if (strcmp(guess, target) == 0) {
+        // 🔹 Vérifier si le joueur a perdu
+        if (attempts == MAX_ATTEMPTS) {
             time_t end_time = time(NULL);
             double seconds = difftime(end_time, start_time);
-            print_grid(guesses, feedbacks, attempts + 1);
-            printf("🎉 Bravo %s ! Mot trouvé : %s\n", player, target);
-            printf("🕐 Temps : %.1f secondes\n", seconds);
-            printf("📊 Tentatives : %d / %d\n", attempts + 1, MAX_ATTEMPTS);
-            save_score(player, target, attempts + 1, seconds, 1);
-            return 0;
+            print_grid(guesses, feedbacks, attempts);
+            printf("❌ Perdu %s ! Le mot était : %s\n", player, target);
+            printf("🕐 Temps total : %.1f secondes\n", seconds);
+            save_score(player, target, attempts, seconds, 0);
         }
 
-        attempts++;
-    }
+        // 🔁 Demander si le joueur veut rejouer
+        char choice;
+        printf("\n🔁 Voulez-vous rejouer ? (o/n) : ");
+        scanf(" %c", &choice);
 
-    time_t end_time = time(NULL);
-    double seconds = difftime(end_time, start_time);
-    print_grid(guesses, feedbacks, attempts);
-    printf("❌ Perdu %s ! Le mot était : %s\n", player, target);
-    printf("🕐 Temps total : %.1f secondes\n", seconds);
-    save_score(player, target, attempts, seconds, 0);
+        if (choice == 'o' || choice == 'O')
+            play_again = 1;
+        else {
+            printf("👋 Merci d'avoir joué, %s ! À bientôt.\n", player);
+            play_again = 0;
+        
+        }
+    }
 
     return 0;
 }
