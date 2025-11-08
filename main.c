@@ -130,7 +130,26 @@ int main() {
     srand(time(NULL));
 
     char dictionary[MAX_WORDS][WORD_LENGTH + 1];
-    int word_count = load_dictionary("words.txt", dictionary);
+    int word_count;
+
+    // 🔹 Choix de la langue (FR / EN)
+    int lang_choice;
+    printf("🌐 Choisissez la langue / Choose language :\n");
+    printf("1 - Français\n2 - English\n");
+    printf("Votre choix / Your choice : ");
+    scanf("%d", &lang_choice);
+
+    const char *dict_file;
+    if (lang_choice == 1)
+        dict_file = "words_fr.txt";
+    else if (lang_choice == 2)
+        dict_file = "words_en.txt";
+    else {
+        printf("❌ Choix invalide, français par défaut.\n");
+        dict_file = "words_fr.txt";
+    }
+
+    word_count = load_dictionary(dict_file, dictionary);
 
     if (word_count == 0) {
         printf("❌ Aucun mot chargé.\n");
