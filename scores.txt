@@ -1,0 +1,12 @@
+Player: imen | Word: leave | Attempts: 6 | Time: 96.0s | Result: LOSE
+Player: imen | Word: swift | Attempts: 6 | Time: 115.0s | Result: LOSE
+Player: Imen | Word: drags | Attempts: 6 | Time: 61.0s | Result: LOSE
+Player: Imen | Word: equip | Attempts: 6 | Time: 43.0s | Result: LOSE
+Player: Imen | Word: melee | Attempts: 5 | Time: 20.0s | Result: WIN
+Joueur: Imen | Mot: ulnas | Tentatives: 7 | Temps: 67.0s | Résultat: PERDU
+Player: imen | Word: stuck | Attempts: 4 | Time: 0.0s | Result: WIN
+Player: imen | Word: fumes | Attempts: 6 | Time: 0.0s | Result: LOSE
+Player: Imen | Word: choir | Attempts: 6 | Time: 56.0s | Result: LOSE
+Player: imen | Word: daisy | Attempts: 6 | Time: 37.0s | Result: LOSE
+Player: imen | Word: dudes | Attempts: 6 | Time: 57.0s | Result: LOSE
+Player: imen | Word: bronc | Attempts: 6 | Time: 48.0s | Result: LOSE
