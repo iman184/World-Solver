@@ -10,3 +10,4 @@ Player: Imen | Word: choir | Attempts: 6 | Time: 56.0s | Result: LOSE
 Player: imen | Word: daisy | Attempts: 6 | Time: 37.0s | Result: LOSE
 Player: imen | Word: dudes | Attempts: 6 | Time: 57.0s | Result: LOSE
 Player: imen | Word: bronc | Attempts: 6 | Time: 48.0s | Result: LOSE
+Player: Amal | Word: ahold | Attempts: 5 | Time: 180.0s | Result: WIN
