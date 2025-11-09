@@ -1,0 +1,6 @@
+# Ignorer les exécutables
+*.exe
+
+# Fichiers temporaires
+*.o
+*.log
