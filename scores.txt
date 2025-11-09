@@ -11,3 +11,5 @@ Player: imen | Word: daisy | Attempts: 6 | Time: 37.0s | Result: LOSE
 Player: imen | Word: dudes | Attempts: 6 | Time: 57.0s | Result: LOSE
 Player: imen | Word: bronc | Attempts: 6 | Time: 48.0s | Result: LOSE
 Player: Amal | Word: ahold | Attempts: 5 | Time: 180.0s | Result: WIN
+Player: Imen | Word: basil | Attempts: 6 | Time: 35.0s | Result: LOSE
+Player: imen | Word: cable | Attempts: 2 | Time: 159.0s | Result: WIN
