@@ -18,3 +18,10 @@ Player: Imen | Word: basil | Attempts: 6 | Time: 35.0s | Result: LOSE
 Player: imen | Word: cable | Attempts: 2 | Time: 159.0s | Result: WIN
 >>>>>>> d6a63bcfd320a9466bf9d9e2a044fb9d24f27db9
 Player: melyssa | Word: dread | Attempts: 4 | Time: 2.0s | Result: WIN
+Player: sabrina | Word: pansy | Attempts: 6 | Time: 997.0s | Result: LOSE
+Player: sabrina | Word: nares | Attempts: 4 | Time: 158.0s | Result: WIN
+Player: sabrina | Word: yules | Attempts: 6 | Time: 558.0s | Result: LOSE
+Player: sabrina | Word: axels | Attempts: 3 | Time: 439.0s | Result: WIN
+Player: mely | Word: snuck | Attempts: 3 | Time: 2.0s | Result: WIN
+Player: mely | Word: taxol | Attempts: 4 | Time: 35.0s | Result: WIN
+Player: mely | Word: snobs | Attempts: 6 | Time: 582.0s | Result: LOSE
