@@ -78,7 +78,11 @@ Manual Mode:
 
 Auto-Solver Mode:
 
-(Replace these images with actual screenshots from your terminal.)
+## Screenshots
+
+**Manual Mode:**  
+![Manual Mode](screenshots/jouer-modeClassique_jeuManuelle)
+
 
 Files in this Repository
 wordle_complete_with_auto_solver.c – Source code of the game and solver.
@@ -87,7 +91,9 @@ words.txt – Dictionary of valid 5-letter words.
 
 Wordle_Solver_Report_Final_Corrected.pdf – Written analysis, justification, and code documentation (Part 3).
 
-screenshots/ – Folder containing screenshots of the program running.
+
+**Auto-Solver Mode:**  
+![Auto-Solver](screenshots/jouer-modeClassique_modeSolver)
 
 Authors
 Zighed Imen
