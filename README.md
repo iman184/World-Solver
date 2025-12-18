@@ -91,10 +91,12 @@ words.txt – Dictionary of valid 5-letter words.
 Wordle_Solver_Report_Final_Corrected.pdf – Written analysis, justification, and code documentation (Part 3).
 
 
-**Auto-Solver Mode:**  
-![Auto-Solver](/screenshots/Home-page.PNG)
+
 
 Authors
 Zighed Imen
 
 Azzoug Mélissa
+
+**Auto-Solver Mode:**  
+![Auto-Solver](/screenshots/Home-page.PNG)
