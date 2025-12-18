@@ -31,3 +31,6 @@ Player: Zighed | Word: style | Attempts: 5 | Time: 172.0s | Result: WIN
 Player: Mellisa | Word: halte | Attempts: 6 | Time: 649.0s | Result: WIN
 Player: Mellisa | Word: armes | Attempts: 3 | Time: 96.0s | Result: WIN
 >>>>>>> b9eb65e (add screen shots)
+Player: zighed | Word: repos | Attempts: 5 | Time: 104.0s | Result: WIN
+Player: imen | Word: sadee | Attempts: 4 | Time: 49.0s | Result: WIN
+Player: imen | Word: gouge | Attempts: 4 | Time: 2.0s | Result: WIN
