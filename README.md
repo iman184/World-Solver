@@ -12,7 +12,9 @@
 - **Authors:** Names of the project contributors.
 
 ---
-![Auto-Solver](https://github.com/iman184/World-Solver/blob/23e5d319807fbfc5c0f7abf44a427c794a009a81/screenshots/Home-page.PNG)
+![Auto-Solver](/screenshots/Home-page.PNG)
+![Auto-Solver](/screenshots/jeu-manuelle-win.PNG)
+![Auto-Solver](/screenshots/scores.PNG)
 
 ## Description
 This project implements the classic Wordle game in C, including a **heuristic-based automatic solver**.  
@@ -58,28 +60,6 @@ yaml
 Copier le code
 Enter your name: Zighed Imen
 Welcome to Wordle in C!
-Choose a mode:
- (1) Manual
- (2) Solver Suggestions
- (3) Auto-Solver
-Your choice: 1
-
-Attempt 1/6: apple
-Feedback: G _ Y _ _
-Auto-Solver Mode:
-
-python-repl
-Copier le code
-Solver chooses: house
-Feedback: _ G _ Y _
-...
- Solver found the word in 4 attempts!
-Screenshots
-Manual Mode:
-
-Auto-Solver Mode:
-
-## Screenshots
 
 
 
