@@ -14,6 +14,7 @@
 ---
 ![Auto-Solver](/screenshots/Home-page.PNG)
 ![Auto-Solver](/screenshots/jeu-manuelle-win.PNG)
+![Auto-Solver](/screenshots/jouer-modeClassique_modeSolver.PNG)
 ![Auto-Solver](/screenshots/scores.PNG)
 
 ## Description
@@ -37,11 +38,11 @@ cd wordle-c
 Windows Terminal Setup
 Before running the program on Windows, set the code page to UTF-8 so that colors and emojis display correctly:
 
-bash
-Copier le code
+### Windows Terminal Setup
+Before running the program on Windows, set the code page to UTF-8 so that colors and emojis display correctly:
+```bash
 chcp 65001
-Compilation
-Compile the main C file:
+
 
 bash
 Copier le code
@@ -63,6 +64,27 @@ Welcome to Wordle in C!
 
 
 
+Exemple propre pour **Manual Mode** :
+
+```text
+Enter your name: Zighed Imen
+🎯 Welcome to Wordle in C!
+Choose a mode:
+ (1) Manual
+ (2) Solver Suggestions
+ (3) Auto-Solver
+Your choice: 1
+
+Attempt 1/6: apple
+Feedback: G _ Y _ _
+Exemple pour Auto-Solver Mode :
+
+text
+Copier le code
+🤖 Solver chooses: house
+Feedback: _ G _ Y _
+...
+🎉 Solver found the word in 4 attempts!
 
 Files in this Repository
 wordle_complete_with_auto_solver.c – Source code of the game and solver.
