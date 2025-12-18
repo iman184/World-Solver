@@ -81,7 +81,7 @@ Auto-Solver Mode:
 ## Screenshots
 
 **Manual Mode:**  
-![Manual Mode](screenshots/jouer-modeClassique_jeuManuelle)
+![Manual Mode](screenshots/jouer-modeClassique_jeuManuelle.PNG)
 
 
 Files in this Repository
@@ -93,7 +93,7 @@ Wordle_Solver_Report_Final_Corrected.pdf – Written analysis, justification, an
 
 
 **Auto-Solver Mode:**  
-![Auto-Solver](screenshots/jouer-modeClassique_modeSolver)
+![Auto-Solver](screenshots/jouer-modeClassique_modeSolver.PNG)
 
 Authors
 Zighed Imen
