@@ -16,6 +16,7 @@ Player: imen | Word: bronc | Attempts: 6 | Time: 48.0s | Result: LOSE
 Player: Amal | Word: ahold | Attempts: 5 | Time: 180.0s | Result: WIN
 Player: Imen | Word: basil | Attempts: 6 | Time: 35.0s | Result: LOSE
 Player: imen | Word: cable | Attempts: 2 | Time: 159.0s | Result: WIN
+<<<<<<< HEAD
 >>>>>>> d6a63bcfd320a9466bf9d9e2a044fb9d24f27db9
 Player: melyssa | Word: dread | Attempts: 4 | Time: 2.0s | Result: WIN
 Player: sabrina | Word: pansy | Attempts: 6 | Time: 997.0s | Result: LOSE
@@ -25,3 +26,8 @@ Player: sabrina | Word: axels | Attempts: 3 | Time: 439.0s | Result: WIN
 Player: mely | Word: snuck | Attempts: 3 | Time: 2.0s | Result: WIN
 Player: mely | Word: taxol | Attempts: 4 | Time: 35.0s | Result: WIN
 Player: mely | Word: snobs | Attempts: 6 | Time: 582.0s | Result: LOSE
+=======
+Player: Zighed | Word: style | Attempts: 5 | Time: 172.0s | Result: WIN
+Player: Mellisa | Word: halte | Attempts: 6 | Time: 649.0s | Result: WIN
+Player: Mellisa | Word: armes | Attempts: 3 | Time: 96.0s | Result: WIN
+>>>>>>> b9eb65e (add screen shots)
