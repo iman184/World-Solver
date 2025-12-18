@@ -12,6 +12,7 @@
 - **Authors:** Names of the project contributors.
 
 ---
+![Auto-Solver](https://github.com/iman184/World-Solver/blob/23e5d319807fbfc5c0f7abf44a427c794a009a81/screenshots/Home-page.PNG)
 
 ## Description
 This project implements the classic Wordle game in C, including a **heuristic-based automatic solver**.  
@@ -98,5 +99,4 @@ Zighed Imen
 
 Azzoug Mélissa
 
-**Auto-Solver Mode:**  
-![Auto-Solver](https://github.com/iman184/World-Solver/blob/23e5d319807fbfc5c0f7abf44a427c794a009a81/screenshots/Home-page.PNG)
+
