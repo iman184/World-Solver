@@ -56,7 +56,7 @@ Manual Mode:
 yaml
 Copier le code
 Enter your name: Zighed Imen
-🎯 Welcome to Wordle in C!
+Welcome to Wordle in C!
 Choose a mode:
  (1) Manual
  (2) Solver Suggestions
@@ -69,10 +69,10 @@ Auto-Solver Mode:
 
 python-repl
 Copier le code
-🤖 Solver chooses: house
+Solver chooses: house
 Feedback: _ G _ Y _
 ...
-🎉 Solver found the word in 4 attempts!
+ Solver found the word in 4 attempts!
 Screenshots
 Manual Mode:
 
@@ -81,7 +81,7 @@ Auto-Solver Mode:
 ## Screenshots
 
 **Manual Mode:**  
-![Manual Mode](screenshots/jouer-modeClassique_jeuManuelle.PNG)
+![Manual Mode](screenshots/jouer-modeClassique_jeuManuelle.png)
 
 
 Files in this Repository
