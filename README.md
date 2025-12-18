@@ -92,7 +92,7 @@ Wordle_Solver_Report_Final_Corrected.pdf – Written analysis, justification, an
 
 
 **Auto-Solver Mode:**  
-![Auto-Solver](screenshots/jouer-modeClassique_modeSolver.png)
+![Auto-Solver](screenshots/jouer-modeClassique_modeSolver.PNG)
 
 Authors
 Zighed Imen
