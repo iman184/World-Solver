@@ -87,9 +87,12 @@ Feedback: _ G _ Y _
 🎉 Solver found the word in 4 attempts!
 
 Files in this Repository
-wordle_complete_with_auto_solver.c – Source code of the game and solver.
+main.c – Source code of the game and solver.
 
-words.txt – Dictionary of valid 5-letter words.
+words_en.txt – Dictionary of valid 5-letter english words.
+
+
+words_fr.txt – Dictionary of valid 5-letter french words.
 
 Wordle_Solver_Report_Final_Corrected.pdf – Written analysis, justification, and code documentation (Part 3).
 
